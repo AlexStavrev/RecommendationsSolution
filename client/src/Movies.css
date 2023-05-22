@@ -1,0 +1,12 @@
+.all-videos{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.movie-card{
+background-color: #1c1c1c !important;
+}
+
+h3{
+    margin: 0;
+}

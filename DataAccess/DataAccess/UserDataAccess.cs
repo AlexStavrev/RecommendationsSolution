@@ -5,7 +5,6 @@ using Neo4j.Driver;
 namespace DataAccess.DataAccess;
 internal class UserDataAccess : IUserDataAccess
 {
-
     private readonly IDriver _driver;
 
     public UserDataAccess(IDriver driver)

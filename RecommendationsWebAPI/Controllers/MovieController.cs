@@ -1,43 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess.Interfaces;
+using DataAccess.Models;
+using Microsoft.AspNetCore.Mvc;
+using RecommendationsWebAPI.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace RecommendationsWebAPI.Controllers
+namespace RecommendationsWebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class MovieController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MovieController : ControllerBase
+    private readonly IMovieDataAccess _movieDataAccess;
+
+    public MovieController(IMovieDataAccess movieDataAcess)
     {
-        // GET: api/<MovieController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        _movieDataAccess = movieDataAcess;
+    }
 
-        // GET api/<MovieController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+    // GET: api/<MovieController>
+    [HttpGet]
+    public async Task<IEnumerable<MovieDTO>> GetAllMovies()
+    {
+        return DTOConverter<Movie, MovieDTO>.FromList(await _movieDataAccess.GetAllAsync());
+    }
 
-        // POST api/<MovieController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    // GET api/<MovieController>/5
+    [HttpGet("{id}")]
+    public string Get(int id)
+    {
+        return "value";
+    }
 
-        // PUT api/<MovieController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+    // POST api/<MovieController>
+    [HttpPost]
+    public void Post([FromBody] string value)
+    {
+    }
 
-        // DELETE api/<MovieController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    // PUT api/<MovieController>/5
+    [HttpPut("{id}")]
+    public void Put(int id, [FromBody] string value)
+    {
+    }
+
+    // DELETE api/<MovieController>/5
+    [HttpDelete("{id}")]
+    public void Delete(int id)
+    {
     }
 }

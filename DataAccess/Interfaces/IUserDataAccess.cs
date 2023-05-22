@@ -3,7 +3,7 @@
 namespace DataAccess.Interfaces;
 public interface IUserDataAccess
 {
-    Task<User> CreateUserAsync(User user);
+    Task<int?> CreateUserAsync(User user);
     Task<User> LoginUserAsync(string name);
     Task<User> GetByIdAsync(int id);
     Task SeeMovieAsync(int userId, int movieId);

@@ -47,7 +47,15 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task LikeMovieAsync(int userId, int movieId)
     {
-        throw new NotImplementedException();
+        float likeWeight = 0.9f;
+        string query = @"
+            MATCH (u:User) WHERE ID(u) = $userId
+            MATCH (m:Movie) WHERE ID(m) = $movieId
+            MERGE (u)-[r:INTERACTED]->(m)
+            ON CREATE SET r.weight = $likeWeight
+            ON MATCH SET r.weight = CASE WHEN r.weight < $likeWeight THEN r.weight + $likeWeight ELSE r.weight END";
+
+        _ = await ExecuteQueryAsync(query, new { userId, movieId, likeWeight });
     }
 
     public async Task<User> LoginUserAsync(string name)

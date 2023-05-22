@@ -19,17 +19,23 @@ public class UsersController : ControllerBase
     }
 
     // GET api/<UserController>/5
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserById(int userId)
     {
-        var user = DTOConverter<User, UserDTO>.From(await _userDataAccess.GetByIdAsync(id));
+        var user = DTOConverter<User, UserDTO>.From(await _userDataAccess.GetByIdAsync(userId));
 
         if (user == null)
         {
-            return BadRequest($"User with id {id} does not exist!");
+            return BadRequest($"User with id {userId} does not exist!");
         }
 
         return Ok(user);
+    }
+
+    [HttpGet("logIn/{userName}")]
+    public async Task<IActionResult> LogIn(string userName)
+    {
+        return Ok(await _userDataAccess.LoginUserAsync(userName));
     }
 
     // POST api/<UserController>

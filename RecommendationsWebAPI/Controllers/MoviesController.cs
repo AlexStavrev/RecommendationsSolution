@@ -26,10 +26,10 @@ public class MoviesController : ControllerBase
     }
 
     // GET api/<MovieController>/5
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetMovieById(int id)
+    [HttpGet("{movieId}")]
+    public async Task<IActionResult> GetMovieById(int movieId)
     {
-        var movie = DTOConverter<Movie?, MovieDTO?>.From(await _movieDataAccess.GetByIdAsync(id));
+        var movie = DTOConverter<Movie?, MovieDTO?>.From(await _movieDataAccess.GetByIdAsync(movieId));
 
         if(movie == null) 
         { 

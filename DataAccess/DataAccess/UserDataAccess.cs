@@ -79,7 +79,15 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task SeeMovieAsync(int userId, int movieId)
     {
-        throw new NotImplementedException();
+        float seeWeight = 0.1f;
+        string query = @"
+            MATCH (u:User) WHERE ID(u) = $userId
+            MATCH (m:Movie) WHERE ID(m) = $movieId
+            MERGE (u)-[r:INTERACTED]->(m)
+            ON CREATE SET r.weight = $seeWeight
+            ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END";
+
+        _ = await ExecuteQueryAsync(query, new { userId, movieId, seeWeight });
     }
 
     private async Task<IEnumerable<IRecord>> ExecuteQueryAsync(string cypherQuery, object parameters = null)

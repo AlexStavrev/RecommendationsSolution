@@ -39,10 +39,17 @@ public class UsersController : ControllerBase
         return Ok(await _userDataAccess.CreateUserAsync(DTOConverter<UserDTO, User>.From(user))); ;
     }
 
-    // PUT api/<UserController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    // PUT api/<UserController>/userId/5/movieId/5
+    [HttpPut("putSeeMovie/userId/{userId}/movie/{movieId}")]
+    public IActionResult PutSeeMovie(int userId, int movieId)
     {
+        return Ok(_userDataAccess.SeeMovieAsync(userId, movieId));
     }
 
+    // PUT api/<UserController>/userId/5/movieId/5
+    [HttpPut("putLikeMovie//userId/{userId}/movie/{movieId}")]
+    public IActionResult PutLikeMovie(int userId, int movieId)
+    {
+        return Ok(_userDataAccess.LikeMovieAsync(userId, movieId));
+    }
 }

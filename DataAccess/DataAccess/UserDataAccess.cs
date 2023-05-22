@@ -1,9 +1,16 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using Neo4j.Driver;
 
 namespace DataAccess.DataAccess;
 internal class UserDataAccess : IUserDataAccess
 {
+
+    public UserDataAccess(IDriver driver)
+    {
+
+    }
+
     public Task<User> CreateUserAsync(User user)
     {
         throw new NotImplementedException();

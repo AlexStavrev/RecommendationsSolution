@@ -19,17 +19,23 @@ public class UsersController : ControllerBase
     }
 
     // GET api/<UserController>/5
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserById(int userId)
     {
-        var user = DTOConverter<User, UserDTO>.From(await _userDataAccess.GetByIdAsync(id));
+        var user = DTOConverter<User, UserDTO>.From(await _userDataAccess.GetByIdAsync(userId));
 
         if (user == null)
         {
-            return BadRequest($"User with id {id} does not exist!");
+            return BadRequest($"User with id {userId} does not exist!");
         }
 
         return Ok(user);
+    }
+
+    [HttpGet("logIn/{userName}")]
+    public async Task<IActionResult> LogIn(string userName)
+    {
+        return Ok(await _userDataAccess.LoginUserAsync(userName));
     }
 
     // POST api/<UserController>
@@ -39,10 +45,17 @@ public class UsersController : ControllerBase
         return Ok(await _userDataAccess.CreateUserAsync(DTOConverter<UserDTO, User>.From(user))); ;
     }
 
-    // PUT api/<UserController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    // PUT api/<UserController>/userId/5/movieId/5
+    [HttpPut("putSeeMovie/userId/{userId}/movie/{movieId}")]
+    public IActionResult PutSeeMovie(int userId, int movieId)
     {
+        return Ok(_userDataAccess.SeeMovieAsync(userId, movieId));
     }
 
+    // PUT api/<UserController>/userId/5/movieId/5
+    [HttpPut("putLikeMovie//userId/{userId}/movie/{movieId}")]
+    public IActionResult PutLikeMovie(int userId, int movieId)
+    {
+        return Ok(_userDataAccess.LikeMovieAsync(userId, movieId));
+    }
 }

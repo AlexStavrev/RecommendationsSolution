@@ -10,10 +10,4 @@
     <PackageReference Include="Neo4j.Driver" Version="5.8.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Models\" />
-    <Folder Include="DataAccess\" />
-  </ItemGroup>
-
 </Project>

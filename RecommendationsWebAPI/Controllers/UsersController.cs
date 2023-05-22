@@ -9,11 +9,11 @@ namespace RecommendationsWebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly IUserDataAccess _userDataAccess;
 
-    public UserController(IUserDataAccess userDataAcess)
+    public UsersController(IUserDataAccess userDataAcess)
     {
         _userDataAccess = userDataAcess;
     }

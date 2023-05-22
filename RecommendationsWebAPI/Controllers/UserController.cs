@@ -1,5 +1,7 @@
 ﻿using DataAccess.Interfaces;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
+using RecommendationsWebAPI.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,24 +18,25 @@ public class UserController : ControllerBase
         _userDataAccess = userDataAcess;
     }
 
-    // GET: api/<UserController>
-    [HttpGet]
-    public IEnumerable<string> Get()
-    {
-        return new string[] { "value1", "value2" };
-    }
-
     // GET api/<UserController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<IActionResult> GetUserById(int id)
     {
-        return "value";
+        var user = DTOConverter<User, UserDTO>.From(await _userDataAccess.GetByIdAsync(id));
+
+        if (user == null)
+        {
+            return BadRequest($"User with id {id} does not exist!");
+        }
+
+        return Ok(user);
     }
 
     // POST api/<UserController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<IActionResult> Post(UserDTO user)
     {
+        return Ok(await _userDataAccess.CreateUserAsync(DTOConverter<UserDTO, User>.From(user))); ;
     }
 
     // PUT api/<UserController>/5
@@ -42,9 +45,4 @@ public class UserController : ControllerBase
     {
     }
 
-    // DELETE api/<UserController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
-    }
 }

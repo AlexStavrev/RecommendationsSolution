@@ -39,22 +39,4 @@ public class MovieController : ControllerBase
         return Ok(movie);
         
     }
-
-    // POST api/<MovieController>
-    [HttpPost]
-    public void Post([FromBody] string value)
-    {
-    }
-
-    // PUT api/<MovieController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<MovieController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
-    }
 }

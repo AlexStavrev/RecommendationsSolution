@@ -9,11 +9,11 @@ namespace RecommendationsWebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MovieController : ControllerBase
+public class MoviesController : ControllerBase
 {
     private readonly IMovieDataAccess _movieDataAccess;
 
-    public MovieController(IMovieDataAccess movieDataAcess)
+    public MoviesController(IMovieDataAccess movieDataAcess)
     {
         _movieDataAccess = movieDataAcess;
     }
@@ -29,7 +29,7 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMovieById(int id)
     {
-        var movie = DTOConverter<Movie, MovieDTO>.From(await _movieDataAccess.GetByIdAsync(id));
+        var movie = DTOConverter<Movie?, MovieDTO?>.From(await _movieDataAccess.GetByIdAsync(id));
 
         if(movie == null) 
         { 

@@ -53,7 +53,21 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task<User> LoginUserAsync(string name)
     {
-        throw new NotImplementedException();
+        var readResults = await ExecuteQueryAsync("MATCH (u:User) WHERE u.name = $name RETURN u", new { name });
+
+        var result = readResults.FirstOrDefault();
+        if (result == null)
+        {
+            return null; // User not found
+        }
+
+        var userNode = result["u"].As<INode>();
+        var user = new User()
+        {
+            Name = userNode["name"].As<string>(),
+        };
+
+        return user;
     }
 
     public async Task SeeMovieAsync(int userId, int movieId)

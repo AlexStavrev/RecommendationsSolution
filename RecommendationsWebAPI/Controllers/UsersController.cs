@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
     }
 
     // PUT api/<UserController>/userId/5/movieId/5
-    [HttpPut("putLikeMovie//userId/{userId}/movie/{movieId}")]
+    [HttpPut("putLikeMovie/userId/{userId}/movie/{movieId}")]
     public IActionResult PutLikeMovie(int userId, int movieId)
     {
         return Ok(_userDataAccess.LikeMovieAsync(userId, movieId));

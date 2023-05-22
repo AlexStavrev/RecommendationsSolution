@@ -13,9 +13,18 @@ internal class UserDataAccess : IUserDataAccess
         _driver = driver;
     }
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<int?> CreateUserAsync(User user)
     {
-        throw new NotImplementedException();
+        var readResults = await ExecuteQueryAsync("CREATE (u:User {name: $name}) RETURN ID(u)", new { name = user.Name });
+
+        var result = readResults.FirstOrDefault();
+        if (result == null || !result.Keys.Contains("ID(u)"))
+        {
+            return null; // User creation failed or ID not found
+        }
+
+        var userId = result["ID(u)"].As<int?>();
+        return userId;
     }
 
     public async Task<User> GetByIdAsync(int id)

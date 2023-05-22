@@ -20,16 +20,24 @@ public class MovieController : ControllerBase
 
     // GET: api/<MovieController>
     [HttpGet]
-    public async Task<IEnumerable<MovieDTO>> GetAllMovies()
+    public async Task<IActionResult> GetAllMovies()
     {
-        return DTOConverter<Movie, MovieDTO>.FromList(await _movieDataAccess.GetAllAsync());
+        return Ok(DTOConverter<Movie, MovieDTO>.FromList(await _movieDataAccess.GetAllAsync()));
     }
 
     // GET api/<MovieController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<IActionResult> GetMovieById(int id)
     {
-        return "value";
+        var movie = DTOConverter<Movie, MovieDTO>.From(await _movieDataAccess.GetByIdAsync(id));
+
+        if(movie == null) 
+        { 
+            return BadRequest(movie); 
+        } 
+        
+        return Ok(movie);
+        
     }
 
     // POST api/<MovieController>

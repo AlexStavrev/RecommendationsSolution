@@ -12,10 +12,12 @@ namespace RecommendationsWebAPI.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserDataAccess _userDataAccess;
+    private readonly IMovieDataAccess _movieDataAccess;
 
-    public UsersController(IUserDataAccess userDataAcess)
+    public UsersController(IUserDataAccess userDataAcess, IMovieDataAccess movieDataAccess)
     {
         _userDataAccess = userDataAcess;
+        _movieDataAccess = movieDataAccess;
     }
 
     // GET api/<UserController>/5
@@ -64,5 +66,13 @@ public class UsersController : ControllerBase
     {
         await _userDataAccess.LikeMovieAsync(userId, movieId);
         return Ok();
+    }
+
+
+    [HttpGet("{userId}/recommendations")]
+    public async Task<IActionResult> GetUserRecommendations(int userId)
+    {
+        var recommendedMovies = DTOConverter<Movie, MovieDTO>.FromList(await _userDataAccess.GetRecomendationsAsync(userId));
+        return Ok(recommendedMovies);
     }
 }

@@ -112,7 +112,7 @@ internal class UserDataAccess : IUserDataAccess
             var movieNode = result["relatedMovie"].As<INode>();
             movies.Add(new Movie()
             {
-                Id = movieNode.ElementId.As<int>(),
+                Id = movieNode.Id.As<int>(),
                 Name = movieNode["name"].As<string>(),
                 Url = movieNode["url"].As<string>()
             });

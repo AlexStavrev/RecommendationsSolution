@@ -23,7 +23,7 @@ internal class MovieDataAccess : IMovieDataAccess
             var movieNode = result["m"].As<INode>();
             movies.Add(new Movie()
             {
-                Id = movieNode.ElementId.As<int>(),
+                Id = movieNode.Id.As<int>(),
                 Name = movieNode["name"].As<string>(),
                 Url = movieNode["url"].As<string>()
             });
@@ -44,7 +44,7 @@ internal class MovieDataAccess : IMovieDataAccess
         var movieNode = result["m"].As<INode>();
         var movie = new Movie()
         {
-            Id = movieNode.ElementId.As<int>(),
+            Id = movieNode.Id.As<int>(),
             Name = movieNode["name"].As<string>(),
             Url = movieNode["url"].As<string>()
         };

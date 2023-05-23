@@ -4,9 +4,56 @@
 }
 
 .movie-card{
-background-color: #1c1c1c !important;
+background-color: #353535 !important;
+height: 280px;
+}
+
+.movie-card:hover{
+cursor: pointer;
 }
 
 h3{
     margin: 0;
+}
+.image-overlay{
+    height: 14rem;
+}
+.moviename{
+    color: #e0dbdb;
+    padding-left: 1rem;
+}
+.movie-margin{
+    margin: 0.5rem;
+}
+.seen{
+    position: relative;
+    top: 0;
+    height: 280px;
+    width: 300px;
+    background-color: #e0dbdb00;
+}
+
+.footer{
+    display: flex;
+}
+
+.likebutton{
+color: #2d669c !important;
+z-index: 10 !important;
+}
+
+.overlay{
+    position: absolute;
+    height: 280px;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 10;
+    border-radius: 3px;
+}
+
+.cardContent{
+ display: flex;
+ padding: 1rem !important;
+ justify-content: space-between;
+ align-items: center;
 }

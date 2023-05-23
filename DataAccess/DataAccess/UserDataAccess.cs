@@ -71,6 +71,7 @@ internal class UserDataAccess : IUserDataAccess
         var userNode = result["u"].As<INode>();
         var user = new User()
         {
+            Id = userNode.Id.As<int>(),
             Name = userNode["name"].As<string>(),
         };
 

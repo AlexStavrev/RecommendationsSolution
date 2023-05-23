@@ -8,4 +8,5 @@ public interface IUserDataAccess
     Task<User> GetByIdAsync(int id);
     Task SeeMovieAsync(int userId, int movieId);
     Task LikeMovieAsync(int userId, int movieId);
+    Task<IEnumerable<Movie>> GetRecomendationsAsync(int userId);
 }

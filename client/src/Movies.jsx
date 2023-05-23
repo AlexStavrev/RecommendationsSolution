@@ -31,9 +31,9 @@ function Movies() {
         <div className="all">
           <h1>All movies</h1>
           <div className="all-videos">
-            {movieList.map((movie) => {
+            {movieList.map((movie, index) => {
               return (
-                <div className="movie-holder">
+                <div key={index} className="movie-holder">
                   <Card className="movie-card" sx={{ width: 300 }}>
                     <CardMedia
                       component="img"

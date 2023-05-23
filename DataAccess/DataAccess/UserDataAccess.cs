@@ -55,7 +55,7 @@ internal class UserDataAccess : IUserDataAccess
             ON CREATE SET r.weight = $likeWeight
             ON MATCH SET r.weight = CASE WHEN r.weight < $likeWeight THEN r.weight + $likeWeight ELSE r.weight END";
 
-        _ = await ExecuteReadQueryAsync(query, new { userId, movieId, likeWeight });
+        _ = await ExecuteWriteQueryAsync(query, new { userId, movieId, likeWeight });
     }
 
     public async Task<User> LoginUserAsync(string name)
@@ -87,7 +87,7 @@ internal class UserDataAccess : IUserDataAccess
             ON CREATE SET r.weight = $seeWeight
             ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END";
 
-        _ = await ExecuteReadQueryAsync(query, new { userId, movieId, seeWeight });
+        _ = await ExecuteWriteQueryAsync(query, new { userId, movieId, seeWeight });
     }
 
     public async Task<IEnumerable<Movie>> GetRecomendationsAsync(int userId)

@@ -11,7 +11,6 @@ function App() {
   const [userId, setUserId] = React.useState(0);
   const [authorized, setAuthorized] = React.useState();
 
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -38,6 +37,8 @@ function App() {
       setOpen(true);
     }
     console.log(response);
+    setUserId(response.id);
+    setAuthorized(true);
   };
 
   const handleChange = (event) => {

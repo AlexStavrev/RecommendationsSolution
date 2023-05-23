@@ -19,7 +19,7 @@ export async function createUser(name) {
     name: name,
   };
 
-  const requestUri = `${dNetUrl}users`;
+  const requestUri = `${dNetUrl}Users`;
   try {
     const res = await axios.post(requestUri, user);
     let response = checkStatus(res);
@@ -40,10 +40,43 @@ export async function getAllMovies() {
   }
 }
 
+export async function getRecommendedMovies(userId) {
+  const requestUri = `${dNetUrl}Users/${userId}/recommendations`;
+  try {
+    const res = await axios.get(requestUri);
+    let response = checkStatus(res);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function putSeen(userId, movieId) {
+  const requestUri = `${dNetUrl}Users/${userId}/movies/${movieId}/see`;
+  try {
+    const res = await axios.get(requestUri);
+    let response = checkStatus(res);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function putLike(userId, movieId) {
+  const requestUri = `${dNetUrl}Users/${userId}/movies/${movieId}/like`;
+  try {
+    const res = await axios.get(requestUri);
+    let response = checkStatus(res);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else {
-    return null;
+    return false;
   }
 }

@@ -21,7 +21,7 @@ function App() {
   const authorize = async () => {
     var response = await logIn(name);
     console.log(response)
-    if (response == null) {
+    if (response == false) {
       setOpen(true);
     } else {
       setAuthorized(true);

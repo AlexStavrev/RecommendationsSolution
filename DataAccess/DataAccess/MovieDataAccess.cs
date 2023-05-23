@@ -25,7 +25,9 @@ internal class MovieDataAccess : IMovieDataAccess
             {
                 Id = movieNode.Id.As<int>(),
                 Name = movieNode["name"].As<string>(),
-                Url = movieNode["url"].As<string>()
+                Url = movieNode["url"].As<string>(),
+                Seen = movieNode["seen"].As<bool>(),
+                Liked = movieNode["liked"].As<bool>()
             });
         }
         return movies;
@@ -46,7 +48,9 @@ internal class MovieDataAccess : IMovieDataAccess
         {
             Id = movieNode.Id.As<int>(),
             Name = movieNode["name"].As<string>(),
-            Url = movieNode["url"].As<string>()
+            Url = movieNode["url"].As<string>(),
+            Seen = movieNode["seen"].As<bool>(),
+            Liked = movieNode["liked"].As<bool>()
         };
 
         return movie;

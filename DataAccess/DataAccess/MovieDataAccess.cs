@@ -24,6 +24,7 @@ internal class MovieDataAccess : IMovieDataAccess
             movies.Add(new Movie()
             {
                 Name = movieNode["name"].As<string>(),
+                Url = movieNode["url"].As<string>()
             });
         }
         return movies;
@@ -43,6 +44,7 @@ internal class MovieDataAccess : IMovieDataAccess
         var movie = new Movie()
         {
             Name = movieNode["name"].As<string>(),
+            Url = movieNode["url"].As<string>()
         };
 
         return movie;

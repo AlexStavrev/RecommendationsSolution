@@ -90,6 +90,34 @@ internal class UserDataAccess : IUserDataAccess
         _ = await ExecuteQueryAsync(query, new { userId, movieId, seeWeight });
     }
 
+    public async Task<IEnumerable<Movie>> GetRecomendationsAsync(int userId)
+    {
+        await using var session = _driver.AsyncSession();
+        string query = @"
+            MATCH (u:User)-[i:INTERACTED]->(movie:Movie)-[r:RELATED]->(relatedMovie:Movie)
+            WHERE ID(u) = $userId
+            WITH relatedMovie, COLLECT(TOFLOAT(i.weight))
+            AS interactedWeights, COLLECT(TOFLOAT(r.weight))
+            AS relatedWeights
+            RETURN relatedMovie,
+            REDUCE(total = 0.0, weight IN interactedWeights + relatedWeights | total + weight)
+            AS totalWeight
+            ORDER BY totalWeight DESC";
+
+        var readResults = await ExecuteQueryAsync(query, new {userId});
+
+        var movies = new List<Movie>();
+        foreach (var result in readResults)
+        {
+            var movieNode = result["relatedMovie"].As<INode>();
+            movies.Add(new Movie()
+            {
+                Name = movieNode["name"].As<string>(),
+            });
+        }
+        return movies;
+    }
+
     private async Task<IEnumerable<IRecord>> ExecuteQueryAsync(string cypherQuery, object parameters = null)
     {
         await using var session = _driver.AsyncSession();

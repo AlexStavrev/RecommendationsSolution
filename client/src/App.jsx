@@ -20,6 +20,7 @@ function App() {
 
   const authorize = async () => {
     var response = await logIn(name);
+    console.log(response)
     if (response == null) {
       setOpen(true);
     } else {
@@ -47,7 +48,7 @@ function App() {
           <>
             <h2>Movie recomendation system</h2>
             <div className="logo">
-              {/* <img src="public/logo.png" className="logo" alt="Movie logo" /> */}
+              {/* <img src="public/neo4j.svg" className="logo" alt="Movie logo" /> */}
             </div>
             <div className="card">
               <Snackbar

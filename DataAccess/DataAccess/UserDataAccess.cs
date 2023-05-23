@@ -14,7 +14,7 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task<int?> CreateUserAsync(User user)
     {
-        var readResults = await ExecuteQueryAsync("CREATE (u:User {name: $name}) RETURN ID(u)", new { name = user.Name });
+        var readResults = await ExecuteWriteQueryAsync("CREATE (u:User {name: $name}) RETURN ID(u)", new { name = user.Name });
 
         var result = readResults.FirstOrDefault();
         if (result == null || !result.Keys.Contains("ID(u)"))
@@ -28,7 +28,7 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task<User> GetByIdAsync(int id)
     {
-        var readResults = await ExecuteQueryAsync("MATCH (u:User) WHERE ID(u) = $id RETURN u", new { id });
+        var readResults = await ExecuteReadQueryAsync("MATCH (u:User) WHERE ID(u) = $id RETURN u", new { id });
 
         var result = readResults.FirstOrDefault();
         if (result == null)
@@ -55,12 +55,12 @@ internal class UserDataAccess : IUserDataAccess
             ON CREATE SET r.weight = $likeWeight
             ON MATCH SET r.weight = CASE WHEN r.weight < $likeWeight THEN r.weight + $likeWeight ELSE r.weight END";
 
-        _ = await ExecuteQueryAsync(query, new { userId, movieId, likeWeight });
+        _ = await ExecuteReadQueryAsync(query, new { userId, movieId, likeWeight });
     }
 
     public async Task<User> LoginUserAsync(string name)
     {
-        var readResults = await ExecuteQueryAsync("MATCH (u:User) WHERE u.name = $name RETURN u", new { name });
+        var readResults = await ExecuteReadQueryAsync("MATCH (u:User) WHERE u.name = $name RETURN u", new { name });
 
         var result = readResults.FirstOrDefault();
         if (result == null)
@@ -87,7 +87,7 @@ internal class UserDataAccess : IUserDataAccess
             ON CREATE SET r.weight = $seeWeight
             ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END";
 
-        _ = await ExecuteQueryAsync(query, new { userId, movieId, seeWeight });
+        _ = await ExecuteReadQueryAsync(query, new { userId, movieId, seeWeight });
     }
 
     public async Task<IEnumerable<Movie>> GetRecomendationsAsync(int userId)
@@ -104,7 +104,7 @@ internal class UserDataAccess : IUserDataAccess
             AS totalWeight
             ORDER BY totalWeight DESC";
 
-        var readResults = await ExecuteQueryAsync(query, new {userId});
+        var readResults = await ExecuteReadQueryAsync(query, new {userId});
 
         var movies = new List<Movie>();
         foreach (var result in readResults)
@@ -120,10 +120,20 @@ internal class UserDataAccess : IUserDataAccess
         return movies;
     }
 
-    private async Task<IEnumerable<IRecord>> ExecuteQueryAsync(string cypherQuery, object parameters = null)
+    private async Task<IEnumerable<IRecord>> ExecuteReadQueryAsync(string cypherQuery, object parameters = null)
     {
         await using var session = _driver.AsyncSession();
         return await session.ExecuteReadAsync(async queryRunner =>
+        {
+            var reader = await queryRunner.RunAsync(cypherQuery, parameters);
+            return await reader.ToListAsync();
+        });
+    }
+
+    private async Task<IEnumerable<IRecord>> ExecuteWriteQueryAsync(string cypherQuery, object parameters = null)
+    {
+        await using var session = _driver.AsyncSession();
+        return await session.ExecuteWriteAsync(async queryRunner =>
         {
             var reader = await queryRunner.RunAsync(cypherQuery, parameters);
             return await reader.ToListAsync();

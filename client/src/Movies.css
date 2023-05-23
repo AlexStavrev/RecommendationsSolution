@@ -4,9 +4,14 @@
 }
 
 .movie-card{
-background-color: #1c1c1c !important;
+background-color: #353535 !important;
+margin: 0.5rem;
 }
 
 h3{
     margin: 0;
+}
+
+.moviename{
+    color: #e0dbdb;
 }

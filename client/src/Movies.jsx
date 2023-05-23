@@ -8,6 +8,7 @@ import "./Movies.css";
 
 function Movies() {
   const [movieList, setMovieList] = useState([]);
+  const [recomendedList, setRecomendedList] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -38,11 +39,11 @@ function Movies() {
                     <CardMedia
                       component="img"
                       height="194"
-                      image=""
+                      image={movie.url}
                     />
                     <CardContent>
                       <div className="title">
-                        <h3>{movie.name}</h3>
+                        <h3 className="moviename">{movie.name}</h3>
                       </div>
                       <div className="like"></div>
                     </CardContent>

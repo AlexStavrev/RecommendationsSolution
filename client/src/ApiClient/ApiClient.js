@@ -54,7 +54,7 @@ export async function getRecommendedMovies(userId) {
 export async function putSeen(userId, movieId) {
   const requestUri = `${dNetUrl}Users/${userId}/movies/${movieId}/see`;
   try {
-    const res = await axios.get(requestUri);
+    const res = await axios.put(requestUri);
     let response = checkStatus(res);
     return response.data;
   } catch {
@@ -65,7 +65,7 @@ export async function putSeen(userId, movieId) {
 export async function putLike(userId, movieId) {
   const requestUri = `${dNetUrl}Users/${userId}/movies/${movieId}/like`;
   try {
-    const res = await axios.get(requestUri);
+    const res = await axios.put(requestUri);
     let response = checkStatus(res);
     return response.data;
   } catch {

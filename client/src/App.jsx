@@ -8,7 +8,9 @@ import "./App.css";
 function App() {
   const [name, setName] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [userId, setUserId] = React.useState(0);
   const [authorized, setAuthorized] = React.useState();
+
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -20,10 +22,11 @@ function App() {
 
   const authorize = async () => {
     var response = await logIn(name);
-    console.log(response)
+    console.log(response.id)
     if (response == false) {
       setOpen(true);
     } else {
+      setUserId(response.id);
       setAuthorized(true);
     }
     console.log(response);
@@ -82,7 +85,7 @@ function App() {
           </>
         ) : (
           <>
-            <Movies></Movies>
+            <Movies userId={userId}></Movies>
           </>
         )}
       </div>

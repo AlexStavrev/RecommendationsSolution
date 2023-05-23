@@ -51,7 +51,7 @@ public class UsersController : ControllerBase
     }
 
     // PUT api/<UserController>/userId/5/movieId/5
-    [HttpPut("users/{userId}/movies/{movieId}/see")]
+    [HttpPut("{userId}/movies/{movieId}/see")]
     public async Task<IActionResult> PutSeeMovie(int userId, int movieId)
     {
         await _userDataAccess.SeeMovieAsync(userId, movieId);
@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
     }
 
     // PUT api/<UserController>/userId/5/movieId/5
-    [HttpPut("users/{userId}/movies/{movieId}/like")]
+    [HttpPut("{userId}/movies/{movieId}/like")]
     public async Task<IActionResult> PutLikeMovie(int userId, int movieId)
     {
         await _userDataAccess.LikeMovieAsync(userId, movieId);

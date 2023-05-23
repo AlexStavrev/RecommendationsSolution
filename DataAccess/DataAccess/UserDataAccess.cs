@@ -113,6 +113,7 @@ internal class UserDataAccess : IUserDataAccess
             movies.Add(new Movie()
             {
                 Name = movieNode["name"].As<string>(),
+                Url = movieNode["url"].As<string>()
             });
         }
         return movies;

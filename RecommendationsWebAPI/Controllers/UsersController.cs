@@ -42,20 +42,27 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(UserDTO user)
     {
-        return Ok(await _userDataAccess.CreateUserAsync(DTOConverter<UserDTO, User>.From(user))); ;
+        int? createdId = await _userDataAccess.CreateUserAsync(DTOConverter<UserDTO, User>.From(user));
+        if(!createdId.HasValue)
+        {
+            return BadRequest($"Failed to create user {user}");
+        }
+        return CreatedAtAction(nameof(GetUserById), new { userId = createdId }, createdId);
     }
 
     // PUT api/<UserController>/userId/5/movieId/5
-    [HttpPut("putSeeMovie/userId/{userId}/movie/{movieId}")]
-    public IActionResult PutSeeMovie(int userId, int movieId)
+    [HttpPut("users/{userId}/movies/{movieId}/see")]
+    public async Task<IActionResult> PutSeeMovie(int userId, int movieId)
     {
-        return Ok(_userDataAccess.SeeMovieAsync(userId, movieId));
+        await _userDataAccess.SeeMovieAsync(userId, movieId);
+        return Ok();
     }
 
     // PUT api/<UserController>/userId/5/movieId/5
-    [HttpPut("putLikeMovie/userId/{userId}/movie/{movieId}")]
-    public IActionResult PutLikeMovie(int userId, int movieId)
+    [HttpPut("users/{userId}/movies/{movieId}/like")]
+    public async Task<IActionResult> PutLikeMovie(int userId, int movieId)
     {
-        return Ok(_userDataAccess.LikeMovieAsync(userId, movieId));
+        await _userDataAccess.LikeMovieAsync(userId, movieId);
+        return Ok();
     }
 }

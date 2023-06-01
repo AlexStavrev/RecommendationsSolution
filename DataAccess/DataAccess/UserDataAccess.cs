@@ -52,8 +52,8 @@ internal class UserDataAccess : IUserDataAccess
             MATCH (u:User) WHERE ID(u) = $userId
             MATCH (m:Movie) WHERE ID(m) = $movieId
             MERGE (u)-[r:INTERACTED]->(m)
-            ON CREATE SET r.weight = $likeWeight, r.liked = true
-            ON MATCH SET r.weight = CASE WHEN r.weight < $likeWeight THEN r.weight + $likeWeight ELSE r.weight END, r.liked = true";
+            ON CREATE SET r.weight = $likeWeight
+            ON MATCH SET r.weight = CASE WHEN r.weight < $likeWeight THEN r.weight + $likeWeight ELSE r.weight END";
 
         _ = await ExecuteWriteQueryAsync(query, new { userId, movieId, likeWeight });
     }
@@ -85,8 +85,8 @@ internal class UserDataAccess : IUserDataAccess
             MATCH (u:User) WHERE ID(u) = $userId
             MATCH (m:Movie) WHERE ID(m) = $movieId
             MERGE (u)-[r:INTERACTED]->(m)
-            ON CREATE SET r.weight = $seeWeight, r.seen = true
-            ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END, r.seen = true";
+            ON CREATE SET r.weight = $seeWeight,
+            ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END";
 
         _ = await ExecuteWriteQueryAsync(query, new { userId, movieId, seeWeight });
     }

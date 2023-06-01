@@ -6,15 +6,15 @@ namespace DataAccess.DataAccess;
 internal class MovieDataAccess : IMovieDataAccess
 {
     private readonly IDriver _driver;
+    private IAsyncSession _session;
     public MovieDataAccess(IDriver driver)
     {
         _driver = driver;
+        Task.Run(() => _session = _driver.AsyncSession());
     }
 
     public async Task<IEnumerable<Movie>> GetAllAsync()
     {
-        await using var session = _driver.AsyncSession();
-
         var readResults = await ExecuteQueryAsync("MATCH (m:Movie) RETURN m");
 
         var movies = new List<Movie>();
@@ -54,8 +54,7 @@ internal class MovieDataAccess : IMovieDataAccess
 
     private async Task<IEnumerable<IRecord>> ExecuteQueryAsync(string cypherQuery, object parameters = null)
     {
-        await using var session = _driver.AsyncSession();
-        return await session.ExecuteReadAsync(async queryRunner =>
+        return await _session.ExecuteReadAsync(async queryRunner =>
         {
             var reader = await queryRunner.RunAsync(cypherQuery, parameters);
             return await reader.ToListAsync();

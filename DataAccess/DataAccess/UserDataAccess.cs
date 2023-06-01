@@ -6,10 +6,12 @@ namespace DataAccess.DataAccess;
 internal class UserDataAccess : IUserDataAccess
 {
     private readonly IDriver _driver;
+    private IAsyncSession _session;
 
     public UserDataAccess(IDriver driver)
     {
         _driver = driver;
+        Task.Run(() => _session = _driver.AsyncSession());
     }
 
     public async Task<int?> CreateUserAsync(User user)
@@ -93,7 +95,6 @@ internal class UserDataAccess : IUserDataAccess
 
     public async Task<IEnumerable<Movie>> GetRecomendationsAsync(int userId)
     {
-        await using var session = _driver.AsyncSession();
         string query = @"
             MATCH (u:User)-[i:INTERACTED]->(movie:Movie)-[r:RELATED]->(relatedMovie:Movie)
             WHERE ID(u) = $userId
@@ -123,8 +124,7 @@ internal class UserDataAccess : IUserDataAccess
 
     private async Task<IEnumerable<IRecord>> ExecuteReadQueryAsync(string cypherQuery, object parameters = null)
     {
-        await using var session = _driver.AsyncSession();
-        return await session.ExecuteReadAsync(async queryRunner =>
+        return await _session.ExecuteReadAsync(async queryRunner =>
         {
             var reader = await queryRunner.RunAsync(cypherQuery, parameters);
             return await reader.ToListAsync();
@@ -133,8 +133,7 @@ internal class UserDataAccess : IUserDataAccess
 
     private async Task<IEnumerable<IRecord>> ExecuteWriteQueryAsync(string cypherQuery, object parameters = null)
     {
-        await using var session = _driver.AsyncSession();
-        return await session.ExecuteWriteAsync(async queryRunner =>
+        return await _session.ExecuteWriteAsync(async queryRunner =>
         {
             var reader = await queryRunner.RunAsync(cypherQuery, parameters);
             return await reader.ToListAsync();

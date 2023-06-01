@@ -1,4 +1,5 @@
-﻿using Neo4j.Driver;
+﻿using DataAccess.Models;
+using Neo4j.Driver;
 
 namespace Playground;
 public class Neo4jMovieService
@@ -35,7 +36,7 @@ public class Neo4jMovieService
             movies.Add(new Movie()
             {
                 Name = movieName,
-                RelatedMovies = await GetRelatedMovies(session, movieName)
+                //RelatedMovies = await GetRelatedMovies(session, movieName)
             });
         }
 
@@ -60,7 +61,7 @@ public class Neo4jMovieService
             var relatedMovie = new Movie()
             {
                 Name = relatedMovieNode["name"].As<string>(),
-                RelatedMovies = new List<Movie>()
+                //RelatedMovies = new List<Movie>()
             };
 
             relatedMovies.Add(relatedMovie);

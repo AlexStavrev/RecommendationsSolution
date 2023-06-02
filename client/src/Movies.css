@@ -3,6 +3,13 @@
     flex-wrap: wrap;
 }
 
+.recomended{
+    display: flex;
+    flex-wrap: wrap;
+}
+.liked{
+    color: rgb(80, 124, 80) !important;
+}
 .movie-card{
 background-color: #353535 !important;
 height: 280px;

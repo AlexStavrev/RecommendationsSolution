@@ -29,8 +29,8 @@ export async function createUser(name) {
   }
 }
 
-export async function getAllMovies() {
-  const requestUri = `${dNetUrl}Movies`;
+export async function getAllMovies(userId) {
+  const requestUri = `${dNetUrl}Movies/user/${userId}`;
   try {
     const res = await axios.get(requestUri);
     let response = checkStatus(res);

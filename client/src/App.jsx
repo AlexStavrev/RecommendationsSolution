@@ -15,7 +15,6 @@ function App() {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
@@ -33,11 +32,11 @@ function App() {
 
   const register = async () => {
     var response = await createUser(name);
+    console.log(response);
     if (response == null) {
       setOpen(true);
     }
-    console.log(response);
-    setUserId(response.id);
+    setUserId(response);
     setAuthorized(true);
   };
 

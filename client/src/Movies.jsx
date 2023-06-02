@@ -17,23 +17,54 @@ function Movies(props) {
   const { userId } = props;
   const [movieList, setMovieList] = useState([]);
   const [recomendedList, setRecomendedList] = useState([]);
-  const [clickedCards, setClickedCards] = useState([]);
-
-  const setIsSeenOverlay = (index) => {
-    if (clickedCards.includes(index)) {
-      setClickedCards(clickedCards.filter((cardIndex) => cardIndex !== index));
-    } else {
-      setClickedCards([...clickedCards, index]);
-    }
-  };
 
   const setSeenVideo = (userId, movieId) => {
-    console.log(userId);
-    console.log(movieId);
+    updateMovieSeen(movieId);
     putSeen(userId, movieId);
   };
 
+const updateMovieLike = (movieId) => {
+
+  // Create a copy of the movie list
+  const updatedMovieList = [...movieList];
+
+  // Find the index of the movie in the array
+  const movieIndex = updatedMovieList.findIndex(movie => movie.id === movieId);
+
+  if (movieIndex !== -1) {
+    // Update the 'liked' property of the movie
+    updatedMovieList[movieIndex] = {
+      ...updatedMovieList[movieIndex],
+      liked: true
+    };
+
+    // Set the updated movie list
+    setMovieList(updatedMovieList);
+}
+}
+
+const updateMovieSeen = (movieId) => {
+
+  // Create a copy of the movie list
+  const updatedMovieList = [...movieList];
+
+  // Find the index of the movie in the array
+  const movieIndex = updatedMovieList.findIndex(movie => movie.id === movieId);
+
+  if (movieIndex !== -1) {
+    // Update the 'liked' property of the movie
+    updatedMovieList[movieIndex] = {
+      ...updatedMovieList[movieIndex],
+      seen: true
+    };
+
+    // Set the updated movie list
+    setMovieList(updatedMovieList);
+}
+}
+
   const setLikedVideo = (userId, movieId) => {
+    updateMovieLike(movieId)
     putLike(userId, movieId);
   };
 
@@ -41,7 +72,7 @@ function Movies(props) {
     const fetchMovies = async () => {
       try {
         const recomended = await getRecommendedMovies(userId);
-        const movies = await getAllMovies();
+        const movies = await getAllMovies(userId);
         setMovieList(movies);
         setRecomendedList(recomended);
         console.log(movies);
@@ -56,11 +87,12 @@ function Movies(props) {
   return (
     <>
       <div className="content">
+      <h1>Recomended</h1>
         <div className="recomended">
-          <h1>Recomened</h1>
           {recomendedList.map((movie, index) => {
             return (
-              <div key={index} className="movie-holder">
+              <div key={index} className="movie-margin">
+              <div className="movie-holder">
                 <Card className="movie-card" sx={{ width: 300 }}>
                   <CardMedia component="img" height="194" image={movie.url} />
                   <CardContent>
@@ -70,6 +102,7 @@ function Movies(props) {
                     <div className="like"></div>
                   </CardContent>
                 </Card>
+              </div>
               </div>
             );
           })}
@@ -81,7 +114,7 @@ function Movies(props) {
               return (
                 <div key={index} className="movie-margin">
                   <div className="movie-holder">
-                    {clickedCards.includes(index) && (
+                    {movie.seen && (
                       <div className="overlay">
                         <img
                           className="image-overlay"
@@ -94,7 +127,6 @@ function Movies(props) {
                       <CardActionArea
                         onClick={() => {
                           setSeenVideo(userId, movie.id);
-                          setIsSeenOverlay(index);
                         }}
                       >
                         <CardMedia
@@ -113,7 +145,7 @@ function Movies(props) {
                                 event.stopPropagation(); // Stop event propagation
                                 setLikedVideo(userId, movie.id);
                               }}
-                              className="likebutton"
+                              className={`${movie.liked ? 'liked' : 'likebutton '}`}
                               aria-label="like"
                               size="large"
                             >

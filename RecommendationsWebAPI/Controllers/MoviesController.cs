@@ -25,6 +25,12 @@ public class MoviesController : ControllerBase
         return Ok(DTOConverter<Movie, MovieDTO>.FromList(await _movieDataAccess.GetAllAsync()));
     }
 
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetAllMoviesByUserId(int userId)
+    {
+        return Ok(DTOConverter<Movie, MovieDTO>.FromList(await _movieDataAccess.GetAllByUserIdAsync(userId)));
+    }
+
     // GET api/<MovieController>/5
     [HttpGet("{movieId}")]
     public async Task<IActionResult> GetMovieById(int movieId)

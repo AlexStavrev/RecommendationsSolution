@@ -87,7 +87,7 @@ internal class UserDataAccess : IUserDataAccess
             MATCH (u:User) WHERE ID(u) = $userId
             MATCH (m:Movie) WHERE ID(m) = $movieId
             MERGE (u)-[r:INTERACTED]->(m)
-            ON CREATE SET r.weight = $seeWeight,
+            ON CREATE SET r.weight = $seeWeight
             ON MATCH SET r.weight = CASE WHEN r.weight < $seeWeight THEN r.weight + $seeWeight ELSE r.weight END";
 
         _ = await ExecuteWriteQueryAsync(query, new { userId, movieId, seeWeight });

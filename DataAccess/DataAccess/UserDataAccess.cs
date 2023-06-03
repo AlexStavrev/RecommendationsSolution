@@ -97,7 +97,7 @@ internal class UserDataAccess : IUserDataAccess
     {
         string query = @"
             MATCH (u:User)-[i:INTERACTED]->(movie:Movie)-[r:RELATED]->(relatedMovie:Movie)
-            WHERE ID(u) = $userId
+            WHERE NOT EXISTS((relatedMovie)<-[:INTERACTED]-(u)) AND ID(u) = $userId
             WITH relatedMovie, COLLECT(TOFLOAT(i.weight))
             AS interactedWeights, COLLECT(TOFLOAT(r.weight))
             AS relatedWeights

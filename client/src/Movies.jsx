@@ -18,9 +18,20 @@ function Movies(props) {
   const [movieList, setMovieList] = useState([]);
   const [recomendedList, setRecomendedList] = useState([]);
 
-  const setSeenVideo = (userId, movieId) => {
+  const setSeenVideo = async (userId, movieId) => {
     updateMovieSeen(movieId);
-    putSeen(userId, movieId);
+    var response = await putSeen(userId, movieId);
+    if(response == null){
+      console.log("Response is null!")
+    }else{
+      const recomended = await getRecommendedMovies(userId);
+      setRecomendedList(recomended);
+    }
+
+    // setTimeout(async () => {
+    //   const recomended = await getRecommendedMovies(userId);
+    //   setRecomendedList(recomended);
+    // }, 1000); 
   };
 
 const updateMovieLike = (movieId) => {
@@ -63,9 +74,16 @@ const updateMovieSeen = (movieId) => {
 }
 }
 
-  const setLikedVideo = (userId, movieId) => {
+  const setLikedVideo = async (userId, movieId) => {
     updateMovieLike(movieId)
-    putLike(userId, movieId);
+    var response = await putLike(userId, movieId);
+    if(response == null){
+      console.log("Response is null!")
+    }else{
+      const recomended = await getRecommendedMovies(userId);
+      console.log(recomended)
+      setRecomendedList(recomended);
+    }
   };
 
   useEffect(() => {

@@ -75,7 +75,7 @@ function App() {
               />
               <div className="buttons">
                 <button className="button" onClick={authorize}>
-                  Log In
+                  Continue
                 </button>
                 <button className="button" onClick={register}>
                   Register
